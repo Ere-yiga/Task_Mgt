@@ -31,8 +31,7 @@ class _HomePageState extends State<HomePage> {
         //mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
-            padding: EdgeInsets.all(20),
-            child: Form(
+            padding: EdgeInsets.all(20),            
               child: TextField(
                 controller: nameController,
 
@@ -42,27 +41,31 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-          ),
 
-          ElevatedButton(onPressed: doSumn, child: Text("Add Task")),
+          ElevatedButton(onPressed: doSumn, style: ElevatedButton.styleFrom(padding: EdgeInsets.all(2)), child: Text("Add Task")),
 
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: sumn
-                .map(
-                  (task) => Row(
-                    children: [
-                      Text(task),
-                      IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () {
-                          setState(() {
-                            sumn.remove(task);
-                          });
-                        },
-                      ),
-                    ],
+            children: sumn.map(
+              (task) => Card(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Expanded(
+                      child: Text(task),
+                    )
+                  ,
+                  //SizedBox(width: 50),
+                  IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () {
+                      setState(() {
+                        sumn.remove(task);
+                      });
+                    },
                   ),
+                ]),
+              ),
                 )
                 .toList(),
           ),
