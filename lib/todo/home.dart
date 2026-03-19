@@ -9,10 +9,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final nameController = TextEditingController();
-  String sumn = "";
+  List <String> sumn = [];
   void doSumn() {
     setState(() {
-      sumn = nameController.text;
+      sumn.add(nameController.text);
+      nameController.clear();
     });
   }
 
@@ -34,14 +35,16 @@ class _HomePageState extends State<HomePage> {
               controller: nameController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                hintText: "Enter your name",
+                hintText: "Enter task",
               ),
             ),
           ),
 
           ElevatedButton(onPressed: doSumn, child: Text("Add Task")),
 
-          Text(sumn),
+          Column(
+            children: sumn.map((task) => Text(task)).toList(),
+          )
         ],
       ),
     );
