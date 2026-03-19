@@ -9,8 +9,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final nameController = TextEditingController();
-  List <String> sumn = [];
+  List<String> sumn = [];
   void doSumn() {
+    if(nameController.text.isEmpty) return;
     setState(() {
       sumn.add(nameController.text);
       nameController.clear();
@@ -26,16 +27,19 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 27, 34, 27),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: ListView(
+        //mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
             padding: EdgeInsets.all(20),
-            child: TextField(
-              controller: nameController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Enter task",
+            child: Form(
+              child: TextField(
+                controller: nameController,
+
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "Enter task",
+                ),
               ),
             ),
           ),
@@ -43,8 +47,25 @@ class _HomePageState extends State<HomePage> {
           ElevatedButton(onPressed: doSumn, child: Text("Add Task")),
 
           Column(
-            children: sumn.map((task) => Text(task)).toList(),
-          )
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: sumn
+                .map(
+                  (task) => Row(
+                    children: [
+                      Text(task),
+                      IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () {
+                          setState(() {
+                            sumn.remove(task);
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                )
+                .toList(),
+          ),
         ],
       ),
     );
