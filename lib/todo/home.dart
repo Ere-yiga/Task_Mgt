@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 
+class Sumn {
+  String title;
+  bool isDone;
+
+  Sumn({required this.title, required this.isDone});
+}
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -9,11 +16,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final nameController = TextEditingController();
-  List<String> sumn = [];
+
+  List<Sumn> sumn = [];
   void doSumn() {
-    if(nameController.text.isEmpty) return;
+    if (nameController.text.isEmpty) return;
     setState(() {
-      sumn.add(nameController.text);
+      sumn.add(Sumn(title: nameController.text, isDone: false));
       nameController.clear();
     });
   }
@@ -28,44 +36,57 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: const Color.fromARGB(255, 27, 34, 27),
       ),
       body: ListView(
-        //mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
-            padding: EdgeInsets.all(20),            
-              child: TextField(
-                controller: nameController,
-
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: "Enter task",
-                ),
+            padding: EdgeInsets.all(20),
+            child: TextField(
+              controller: nameController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: "Enter task",
               ),
             ),
+          ),
 
-          ElevatedButton(onPressed: doSumn, style: ElevatedButton.styleFrom(padding: EdgeInsets.all(2)), child: Text("Add Task")),
+          ElevatedButton(onPressed: doSumn, child: Text("Add Task")),
 
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: sumn.map(
-              (task) => Card(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Expanded(
-                      child: Text(task),
-                    )
-                  ,
-                  //SizedBox(width: 50),
-                  IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () {
-                      setState(() {
-                        sumn.remove(task);
-                      });
-                    },
+            children: sumn
+                .map(
+                  (task) => Card(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Checkbox(
+                          value: task.isDone,
+                          onChanged: (value) {
+                            setState(() {
+                              task.isDone = value!;
+                            });
+                          },
+                        ),
+                        Expanded(
+                          child: Text(
+                            task.title,
+                            style: TextStyle(
+                              decoration: task.isDone
+                                  ? TextDecoration.lineThrough
+                                  : TextDecoration.none,
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () {
+                            setState(() {
+                              sumn.remove(task);
+                            });
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                ]),
-              ),
                 )
                 .toList(),
           ),
