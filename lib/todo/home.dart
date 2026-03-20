@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Sumn {
   String title;
   bool isDone;
-
+  
   Sumn({required this.title, required this.isDone});
 }
 
